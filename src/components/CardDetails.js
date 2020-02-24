@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "semantic-ui-react";
 
 const CardDetails = props => {
   return (
@@ -16,13 +17,17 @@ const CardDetails = props => {
             <div className="d-flex justify-content-between align-items-center">
               <center>
                 <br />
-                <button
-                  type="button"
-                  className="btn btn-sm btn-outline-secondary"
-                  onClick={props.flipCard}
-                >
-                  {props.hideAnswer ? "Reveal Answer" : "Hide Answer"}
-                </button>
+
+                {props.hideAnswer ? (
+                  <Button positive onClick={props.flipCard}>
+                    Reveal Answer
+                  </Button>
+                ) : (
+                  <Button negative onClick={props.flipCard}>
+                    Hide Answer
+                  </Button>
+                )}
+
                 <button
                   className="btn btn-sm btn-outline-secondary"
                   onClick={props.toggleNotes}

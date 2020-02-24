@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Icon } from "semantic-ui-react";
 
 const CardNavButtons = props => {
   return (
@@ -8,26 +9,19 @@ const CardNavButtons = props => {
           {props.showNotes ? (
             ""
           ) : (
-            <button
-              className="btn btn-outline-secondary"
-              onClick={props.previousCard}
-              id="previous"
-            >
-              <i className="fa fa-angle-left fa-3x" />
-            </button>
+            <Button primary onClick={props.previousCard} id="previous">
+              <Icon name="left arrow" />
+              Previous
+            </Button>
           )}
-          <button className="btn btn-outline-primary" onClick={props.goBack}>
-            Home
-          </button>
+          <Button onClick={props.goBack}>Home</Button>
           {props.showNotes ? (
             ""
           ) : (
-            <button
-              className="btn btn-outline-secondary"
-              onClick={props.nextCard}
-            >
-              <i className="fa fa-angle-right fa-3x" />
-            </button>
+            <Button primary onClick={props.nextCard} id="next">
+              Next
+              <Icon name="right arrow" />
+            </Button>
           )}
         </div>
       </center>

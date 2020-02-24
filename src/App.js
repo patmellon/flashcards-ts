@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./App.css";
+import { Container, Header } from "semantic-ui-react";
 import { Route, Switch, HashRouter } from "react-router-dom";
 import { createHashHistory } from "history";
 import CardIndex from "./components/CardIndex";
@@ -170,52 +170,59 @@ class App extends Component {
         <div>
           <HashRouter>
             <div>
-              <Switch>
-                <Route
-                  exact
-                  path={"/"}
-                  render={props => (
-                    <CardIndex
-                      startingCards={startingCards}
-                      showCardsRoute={this.showCardsRoute}
-                      setCardIndex={this.setCardIndex}
-                    />
-                  )}
-                />
-                <Route
-                  exact
-                  path={"/cards"}
-                  render={props =>
-                    loading ? (
-                      <Loading />
-                    ) : (
-                      <CardsContainer
-                        response={response}
+              <Container
+                style={{
+                  paddingTop: "20px"
+                }}
+              >
+                <Header as="h2">JS Flashcards</Header>
+                <Switch>
+                  <Route
+                    exact
+                    path={"/"}
+                    render={props => (
+                      <CardIndex
+                        startingCards={startingCards}
                         showCardsRoute={this.showCardsRoute}
-                        cardIndex={cardIndex}
-                        flipCard={this.flipCard}
-                        hideAnswer={hideAnswer}
-                        cardId={cardId}
-                        nextCard={this.nextCard}
-                        previousCard={this.previousCard}
-                        goBack={this.goBack}
-                        toggleNotes={this.toggleNotes}
-                        showNotes={showNotes}
-                        inputNotes={this.inputNotes}
-                        handleUpdate={this.handleUpdate}
-                        notes={notes}
-                        setNoteState={this.setNoteState}
-                        submitUpdate={this.submitUpdate}
+                        setCardIndex={this.setCardIndex}
                       />
-                    )
-                  }
-                />
-                <Route
-                  render={function() {
-                    return <p>Not Found</p>;
-                  }}
-                />
-              </Switch>
+                    )}
+                  />
+                  <Route
+                    exact
+                    path={"/cards"}
+                    render={props =>
+                      loading ? (
+                        <Loading />
+                      ) : (
+                        <CardsContainer
+                          response={response}
+                          showCardsRoute={this.showCardsRoute}
+                          cardIndex={cardIndex}
+                          flipCard={this.flipCard}
+                          hideAnswer={hideAnswer}
+                          cardId={cardId}
+                          nextCard={this.nextCard}
+                          previousCard={this.previousCard}
+                          goBack={this.goBack}
+                          toggleNotes={this.toggleNotes}
+                          showNotes={showNotes}
+                          inputNotes={this.inputNotes}
+                          handleUpdate={this.handleUpdate}
+                          notes={notes}
+                          setNoteState={this.setNoteState}
+                          submitUpdate={this.submitUpdate}
+                        />
+                      )
+                    }
+                  />
+                  <Route
+                    render={function() {
+                      return <p>Not Found</p>;
+                    }}
+                  />
+                </Switch>
+              </Container>
             </div>
           </HashRouter>
         </div>
