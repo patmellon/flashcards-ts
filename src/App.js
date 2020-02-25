@@ -202,9 +202,7 @@ class App extends Component {
                           toggleNotes={this.toggleNotes}
                           showNotes={showNotes}
                           inputNotes={this.inputNotes}
-                          handleUpdate={this.handleUpdate}
                           notes={notes}
-                          setNoteState={this.setNoteState}
                           submitUpdate={this.submitUpdate}
                         />
                       )

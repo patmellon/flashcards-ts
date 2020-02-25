@@ -7,16 +7,14 @@ interface Props {
   response: { content: { method: string; description: string }[] }[];
   cardIndex: number;
   cardId: number;
+  showNotes: boolean;
+  notes: string;
   toggleNotes(): boolean;
-  setNoteState(): boolean;
   submitUpdate(): boolean;
-  handleUpdate(): boolean;
   inputNotes(): boolean;
   previousCard(): boolean;
   goBack(): boolean;
   nextCard(): boolean;
-  showNotes: boolean;
-  notes: string;
 }
 
 const CardsContainer = ({
@@ -24,9 +22,7 @@ const CardsContainer = ({
   cardIndex,
   cardId,
   toggleNotes,
-  setNoteState,
   submitUpdate,
-  handleUpdate,
   showNotes,
   inputNotes,
   notes,
@@ -47,9 +43,7 @@ const CardsContainer = ({
           cardId={cardId}
           toggleNotes={toggleNotes}
           inputNotes={inputNotes}
-          handleUpdate={handleUpdate}
           notes={notes}
-          setNoteState={setNoteState}
           submitUpdate={submitUpdate}
         />
       ) : (
