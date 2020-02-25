@@ -56,12 +56,6 @@ class App extends Component {
     this.showCardsRoute();
   };
 
-  flipCard = () => {
-    this.setState(prevState => ({
-      hideAnswer: !prevState.hideAnswer
-    }));
-  };
-
   nextCard = () => {
     let currentCardId = this.state.cardId;
     let cardSetLength = this.state.response[this.state.cardIndex].content
@@ -171,6 +165,7 @@ class App extends Component {
           <HashRouter>
             <div>
               <Container
+                text
                 style={{
                   paddingTop: "20px"
                 }}
@@ -199,7 +194,6 @@ class App extends Component {
                           response={response}
                           showCardsRoute={this.showCardsRoute}
                           cardIndex={cardIndex}
-                          flipCard={this.flipCard}
                           hideAnswer={hideAnswer}
                           cardId={cardId}
                           nextCard={this.nextCard}
