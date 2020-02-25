@@ -1,16 +1,24 @@
-import React, { useState, setState } from "react";
+import React, { useState } from "react";
 import { Card, Button, Icon } from "semantic-ui-react";
 
-const CardDetails = props => {
+interface Props {
+  card: {
+    method: string;
+    description: string;
+  };
+  toggleNotes(): boolean;
+}
+
+const CardDetails = ({ card, toggleNotes }: Props) => {
   const [hideAnswer, setHideAnswer] = useState(true);
   const toggleAnswer = () => setHideAnswer(!hideAnswer);
 
   return (
     <Card>
       <Card.Content>
-        <Card.Header>{props.card.method}</Card.Header>
+        <Card.Header>{card.method}</Card.Header>
         <Card.Description>
-          {hideAnswer ? "" : props.card.description}
+          {hideAnswer ? "" : card.description}
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
@@ -24,7 +32,7 @@ const CardDetails = props => {
               Hide Answer
             </Button>
           )}
-          <Button basic color="red" onClick={props.toggleNotes}>
+          <Button basic color="red" onClick={toggleNotes}>
             <Icon name="edit" />
           </Button>
         </div>
