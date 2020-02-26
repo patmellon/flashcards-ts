@@ -9,12 +9,12 @@ interface Props {
   cardId: number;
   showNotes: boolean;
   notes: string;
-  toggleNotes(): boolean;
-  submitUpdate(): boolean;
-  inputNotes(): boolean;
-  previousCard(): boolean;
-  goBack(): boolean;
-  nextCard(): boolean;
+  toggleNotes(): Function;
+  submitUpdate(): Function;
+  inputNotes(): Function;
+  previousCard(): Function;
+  goBack(): Function;
+  nextCard(): Function;
 }
 
 const CardsContainer = ({
