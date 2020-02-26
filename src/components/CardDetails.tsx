@@ -6,12 +6,14 @@ interface Props {
     method: string;
     description: string;
   };
-  toggleNotes(): boolean;
+  toggleNotes(): Function;
 }
 
 const CardDetails = ({ card, toggleNotes }: Props) => {
   const [hideAnswer, setHideAnswer] = useState(true);
-  const toggleAnswer = () => setHideAnswer(!hideAnswer);
+  const toggleAnswer = () => {
+    setHideAnswer(!hideAnswer);
+  };
 
   return (
     <Card>
