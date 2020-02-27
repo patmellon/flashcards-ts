@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Container, Header } from "semantic-ui-react";
+import React, { useState, useEffect, useReducer } from "react";
+import { Container, Header, Grid } from "semantic-ui-react";
 import { Route, Switch, HashRouter } from "react-router-dom";
 import { createHashHistory } from "history";
 import CardIndex from "./components/CardIndex";
@@ -7,114 +7,100 @@ import CardsContainer from "./components/CardsContainer";
 import Loading from "./components/Loading";
 import data from "./data/data";
 
-let api = require("./utils/api");
-let history = createHashHistory();
+const api = require("./utils/api");
+const history = createHashHistory();
 
-class App extends Component {
-  state = {
-    startingCards: [],
-    response: [],
-    loading: true,
-    collapsed: true,
-    cardIndex: null,
-    hideAnswer: true,
-    cardId: 0,
-    showNotes: false,
-    notes: ""
-  };
+const App = () => {
+  const [startingCards, setStartingCards] = useState([]);
+  const [response, setResponse] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [cardIndex, setCardIndex] = useState(null);
+  const [showNotes, setShowNotes] = useState(0);
+  const [notes, setNotes] = useState("");
 
-  componentDidMount = () => {
-    this.setState({
-      response: data,
-      loading: false,
-      startingCards: this.startingCards(data)
-    });
-  };
+  useEffect(() => {
+    setResponse(data);
+    setLoading(false);
+    const displayStartingCards = res => {
+      return res.reduce((startingCards, card) => {
+        startingCards.push(card.group);
 
-  startingCards = res => {
-    let startingCards = [];
-    for (let i = 0; i < res.length; i++) {
-      startingCards.push(res[i].group);
+        return startingCards;
+      }, []);
+    };
+    setStartingCards(displayStartingCards(data));
+  }, []);
+
+  const cardIdReducer = (cardId, action) => {
+    const cardSetLength = response[cardIndex].content.length;
+    switch (action) {
+      case "next":
+        if (cardId === cardSetLength - 1) {
+          return 0;
+        }
+        if (cardId <= cardSetLength - 1) {
+          return cardId + 1;
+        }
+      case "previous":
+        if (cardId === 0) {
+          return (cardId = cardSetLength - 1);
+        }
+        if (cardId <= cardSetLength - 1) {
+          return cardId - 1;
+        }
+      case "go back":
+        return 0;
+      default:
+        return 0;
     }
-    return startingCards;
   };
 
-  showCardsRoute = () => {
+  const [cardId, dispatch] = useReducer(cardIdReducer, 0);
+
+  const showCardsRoute = () => {
     history.push("/cards");
   };
 
-  goBack = () => {
+  const goBack = () => {
     history.push("/");
-    if (!this.state.hideAnswer) {
-      this.setState({ hideAnswer: true });
-    }
-    this.setState({ cardId: 0, showNotes: false });
+    //  if (!this.state.hideAnswer) {
+    //    this.setState({ hideAnswer: true });
+    //  }
+    dispatch("go back");
+    setShowNotes(false);
   };
 
-  setCardIndex = i => {
-    this.setState({ cardIndex: i });
-    this.showCardsRoute();
+  const setCardIndexOnClick = i => {
+    setCardIndex(i);
+    showCardsRoute();
   };
 
-  nextCard = () => {
-    let currentCardId = this.state.cardId;
-    let cardSetLength = this.state.response[this.state.cardIndex].content
-      .length;
-
-    if (currentCardId <= cardSetLength - 1) {
-      this.setState({ cardId: currentCardId + 1 });
-    }
-
-    if (currentCardId === cardSetLength - 1) {
-      this.setState({ cardId: 0 });
-    }
+  const toggleNotes = () => {
+    setShowNotes(!showNotes);
+    setNoteState();
   };
 
-  previousCard = () => {
-    let currentCardId = this.state.cardId;
-    let cardSetLength = this.state.response[this.state.cardIndex].content
-      .length;
-
-    if (currentCardId <= cardSetLength - 1) {
-      this.setState({ cardId: currentCardId - 1 });
-    }
-
-    if (this.state.cardId === 0) {
-      this.setState({ cardId: cardSetLength - 1 });
-    }
-  };
-
-  toggleNotes = () => {
-    this.setState(prevState => ({
-      showNotes: !prevState.showNotes
-    }));
-    this.setNoteState();
-  };
-
-  setNoteState = () => {
-    let cardId = this.state.cardId;
-    let cardIndex = this.state.cardIndex;
-    let notes = this.state.response[cardIndex].content[cardId].notes;
+  const setNoteState = () => {
+    let notes = response[cardIndex].content[cardId].notes;
     if (typeof notes !== "undefined") {
-      this.setState({ notes: notes });
+      setNotes(notes);
     } else {
-      this.setState({ notes: "" });
+      setNotes("");
     }
   };
 
-  inputNotes = e => {
-    this.setState({ notes: e.target.value });
+  const inputNotes = e => {
+    setNotes(e.target.value);
   };
 
-  setCardObject = () => {
-    let cardCollection = this.state.response;
-    let cardIndex = this.state.cardIndex;
+  const setCardObject = () => {
+    let cardCollection = response;
     let cardsToUpdate = cardCollection[cardIndex].content;
 
     let updatedCards = cardsToUpdate.map(card => {
-      if (card.id === this.state.cardId + 1) {
+      if (card.id === cardId + 1) {
         return Object.assign({}, card, {
-          notes: this.state.notes
+          notes: notes
         });
       } else {
         return card;
@@ -133,7 +119,7 @@ class App extends Component {
     return newCardCollection;
   };
 
-  submitUpdate = () => {
+  const submitUpdate = () => {
     api
       .updateNotes(this.setCardObject())
       .then(responseJson => {
@@ -144,83 +130,75 @@ class App extends Component {
       });
   };
 
-  handleUpdate = newCardCollection => {
-    this.setState({ response: newCardCollection });
+  const handleUpdate = newCardCollection => {
+    setResponse(newCardCollection);
   };
 
-  render() {
-    const {
-      startingCards,
-      loading,
-      response,
-      cardIndex,
-      hideAnswer,
-      cardId,
-      showNotes,
-      notes
-    } = this.state;
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <HashRouter>
-            <div>
-              <Container
-                text
-                style={{
-                  paddingTop: "20px"
-                }}
-              >
-                <Header as="h2">JS Flashcards</Header>
-                <Switch>
-                  <Route
-                    exact
-                    path={"/"}
-                    render={props => (
-                      <CardIndex
-                        startingCards={startingCards}
-                        showCardsRoute={this.showCardsRoute}
-                        setCardIndex={this.setCardIndex}
+        <HashRouter>
+          <div>
+            <Container
+              text
+              style={{
+                paddingTop: "20px"
+              }}
+            >
+              <Grid>
+                <Grid.Row>
+                  <Grid.Column width={16}>
+                    <Header as="h2">JS Flashcards</Header>
+                    <Switch>
+                      <Route
+                        exact
+                        path={"/"}
+                        render={props => (
+                          <CardIndex
+                            startingCards={startingCards}
+                            showCardsRoute={showCardsRoute}
+                            setCardIndex={setCardIndexOnClick}
+                          />
+                        )}
                       />
-                    )}
-                  />
-                  <Route
-                    exact
-                    path={"/cards"}
-                    render={props =>
-                      loading ? (
-                        <Loading />
-                      ) : (
-                        <CardsContainer
-                          response={response}
-                          showCardsRoute={this.showCardsRoute}
-                          cardIndex={cardIndex}
-                          hideAnswer={hideAnswer}
-                          cardId={cardId}
-                          nextCard={this.nextCard}
-                          previousCard={this.previousCard}
-                          goBack={this.goBack}
-                          toggleNotes={this.toggleNotes}
-                          showNotes={showNotes}
-                          inputNotes={this.inputNotes}
-                          notes={notes}
-                          submitUpdate={this.submitUpdate}
-                        />
-                      )
-                    }
-                  />
-                  <Route
-                    render={function() {
-                      return <p>Not Found</p>;
-                    }}
-                  />
-                </Switch>
-              </Container>
-            </div>
-          </HashRouter>
-        </div>
+                      <Route
+                        exact
+                        path={"/cards"}
+                        render={props =>
+                          loading ? (
+                            <Loading />
+                          ) : (
+                            <CardsContainer
+                              response={response}
+                              showCardsRoute={showCardsRoute}
+                              cardIndex={cardIndex}
+                              cardId={cardId}
+                              goBack={goBack}
+                              toggleNotes={toggleNotes}
+                              showNotes={showNotes}
+                              inputNotes={inputNotes}
+                              notes={notes}
+                              submitUpdate={submitUpdate}
+                              dispatch={dispatch}
+                            />
+                          )
+                        }
+                      />
+                      <Route
+                        render={function() {
+                          return <p>Not Found</p>;
+                        }}
+                      />
+                    </Switch>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Container>
+          </div>
+        </HashRouter>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;
