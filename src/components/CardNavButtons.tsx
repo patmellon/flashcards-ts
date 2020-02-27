@@ -1,19 +1,13 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { Button, Icon, Divider } from "semantic-ui-react";
 
 interface Props {
   showNotes: boolean;
-  previousCard: () => void;
   goBack: () => void;
-  nextCard: () => void;
+  dispatch(action: string): Function;
 }
 
-const CardNavButtons = ({
-  showNotes,
-  previousCard,
-  goBack,
-  nextCard
-}: Props) => {
+const CardNavButtons = ({ showNotes, goBack, dispatch }: Props) => {
   return (
     <div>
       <Divider />
@@ -21,8 +15,8 @@ const CardNavButtons = ({
         {showNotes ? (
           ""
         ) : (
-          <Button primary onClick={previousCard} id="previous">
-            <Icon name="left arrow" />
+          <Button primary onClick={() => dispatch("previous")} id="previous">
+            <Icon />
             Previous
           </Button>
         )}
@@ -30,9 +24,9 @@ const CardNavButtons = ({
         {showNotes ? (
           ""
         ) : (
-          <Button primary onClick={nextCard} id="next">
+          <Button primary onClick={() => dispatch("next")} id="next">
             Next
-            <Icon name="right arrow" />
+            <Icon />
           </Button>
         )}
       </div>
