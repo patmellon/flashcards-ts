@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from "react";
 import { Container, Header, Grid } from "semantic-ui-react";
 import { Route, Switch, HashRouter } from "react-router-dom";
 import { createHashHistory } from "history";
-import CardIndex from "./components/CardIndex";
+import CardsLanding from "./components/CardsLanding";
 import CardsContainer from "./components/CardsContainer";
 import Loading from "./components/Loading";
 import data from "./data/data";
@@ -21,6 +21,7 @@ const App = () => {
   useEffect(() => {
     setResponse(data);
     setLoading(false);
+
     const displayStartingCards = res => {
       return res.reduce((startingCards, card) => {
         startingCards.push(card.group);
@@ -28,6 +29,7 @@ const App = () => {
         return startingCards;
       }, []);
     };
+
     setStartingCards(displayStartingCards(data));
   }, []);
 
@@ -43,7 +45,7 @@ const App = () => {
         }
       case "previous":
         if (cardId === 0) {
-          return (cardId = cardSetLength - 1);
+          return cardSetLength - 1;
         }
         if (cardId <= cardSetLength - 1) {
           return cardId - 1;
@@ -148,13 +150,15 @@ const App = () => {
               <Grid>
                 <Grid.Row>
                   <Grid.Column width={16}>
-                    <Header as="h2">JS Flashcards</Header>
+                    <Header as="h2" textAlign="center">
+                      JS Flashcards
+                    </Header>
                     <Switch>
                       <Route
                         exact
                         path={"/"}
                         render={props => (
-                          <CardIndex
+                          <CardsLanding
                             startingCards={startingCards}
                             showCardsRoute={showCardsRoute}
                             setCardIndex={setCardIndexOnClick}
