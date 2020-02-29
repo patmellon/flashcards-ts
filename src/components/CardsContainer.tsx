@@ -13,7 +13,7 @@ interface Props {
   submitUpdate(): Function;
   inputNotes(): Function;
   goBack(): Function;
-  dispatch(): Function
+  dispatch(): Function;
 }
 
 const CardsContainer = ({
