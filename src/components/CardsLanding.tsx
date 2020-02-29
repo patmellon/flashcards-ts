@@ -6,7 +6,7 @@ interface Props {
   setCardIndex: (i: number) => void;
 }
 
-const CardIndex = ({ startingCards, setCardIndex }: Props) => {
+const CardsLanding = ({ startingCards, setCardIndex }: Props) => {
   const mappedStartingCards = startingCards.map((card, i) => {
     return (
       <Card key={card}>
@@ -19,7 +19,7 @@ const CardIndex = ({ startingCards, setCardIndex }: Props) => {
       </Card>
     );
   });
-  return <Card.Group>{mappedStartingCards}</Card.Group>;
+  return <Card.Group centered>{mappedStartingCards}</Card.Group>;
 };
 
-export default CardIndex;
+export default CardsLanding;
