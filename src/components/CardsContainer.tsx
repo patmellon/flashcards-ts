@@ -12,8 +12,6 @@ interface Props {
   toggleNotes(): Function;
   submitUpdate(): Function;
   inputNotes(): Function;
-  goBack(): Function;
-  dispatch(): Function;
 }
 
 const CardsContainer = ({
@@ -24,9 +22,7 @@ const CardsContainer = ({
   submitUpdate,
   showNotes,
   inputNotes,
-  notes,
-  goBack,
-  dispatch
+  notes
 }: Props) => {
   const cardDetails = response[cardIndex].content.map(card => {
     return <CardDetails card={card} toggleNotes={toggleNotes} />;
@@ -47,13 +43,7 @@ const CardsContainer = ({
       ) : (
         cardDetails[cardId]
       )}
-      {
-        <CardNavButtons
-          showNotes={showNotes}
-          goBack={goBack}
-          dispatch={dispatch}
-        />
-      }
+      {<CardNavButtons />}
     </div>
   );
 };

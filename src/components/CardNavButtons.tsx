@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Icon, Divider, Grid } from "semantic-ui-react";
+import { NavButtonContext } from "../context/NavButtonContext";
 
-interface Props {
-  showNotes: boolean;
-  goBack: () => void;
-  dispatch(action: string): Function;
-}
+const CardNavButtons = () => {
+  const context = useContext(NavButtonContext);
+  const { dispatch, goBack } = context;
 
-const CardNavButtons = ({ showNotes, goBack, dispatch }: Props) => {
   return (
     <div>
       <Divider />
@@ -18,22 +16,16 @@ const CardNavButtons = ({ showNotes, goBack, dispatch }: Props) => {
         }}
       >
         <Button.Group textAlign="center">
-          {showNotes ? (
-            ""
-          ) : (
-            <Button primary onClick={() => dispatch("previous")} id="previous">
-              <Icon />
-              Previous
-            </Button>
+          <Button primary onClick={() => dispatch("previous")} id="previous">
+            <Icon />
+            Previous
+          </Button>
           )}
           <Button onClick={goBack}>Home</Button>
-          {showNotes ? (
-            ""
-          ) : (
-            <Button primary onClick={() => dispatch("next")} id="next">
-              Next
-              <Icon />
-            </Button>
+          <Button primary onClick={() => dispatch("next")} id="next">
+            Next
+            <Icon />
+          </Button>
           )}
         </Button.Group>
       </Grid>

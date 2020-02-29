@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useReducer } from "react";
-import { Container, Header, Grid } from "semantic-ui-react";
+import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Route, Switch, HashRouter } from "react-router-dom";
 import { createHashHistory } from "history";
 import CardsLanding from "./components/CardsLanding";
 import CardsContainer from "./components/CardsContainer";
 import Loading from "./components/Loading";
+import Layout from "./components/Layout";
 import data from "./data/data";
+import { NavButtonContext } from "./context/NavButtonContext";
 
 const api = require("./utils/api");
 const history = createHashHistory();
@@ -15,7 +16,7 @@ const App = () => {
   const [response, setResponse] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cardIndex, setCardIndex] = useState(null);
-  const [showNotes, setShowNotes] = useState(0);
+  const [showNotes, setShowNotes] = useState(false);
   const [notes, setNotes] = useState("");
 
   useEffect(() => {
@@ -65,9 +66,6 @@ const App = () => {
 
   const goBack = () => {
     history.push("/");
-    //  if (!this.state.hideAnswer) {
-    //    this.setState({ hideAnswer: true });
-    //  }
     dispatch("go back");
     setShowNotes(false);
   };
@@ -136,71 +134,61 @@ const App = () => {
     setResponse(newCardCollection);
   };
 
+  const state = useMemo(() => {
+    return {
+      cardId,
+      goBack,
+      dispatch
+    };
+  }, [cardId]);
+
   return (
     <div>
-      <div>
-        <HashRouter>
-          <div>
-            <Container
-              text
-              style={{
-                paddingTop: "20px"
+      <HashRouter>
+        <Layout>
+          <Switch>
+            <Route
+              exact
+              path={"/"}
+              render={props => (
+                <CardsLanding
+                  startingCards={startingCards}
+                  showCardsRoute={showCardsRoute}
+                  setCardIndex={setCardIndexOnClick}
+                />
+              )}
+            />
+            <Route
+              exact
+              path={"/cards"}
+              render={props =>
+                loading ? (
+                  <Loading />
+                ) : (
+                  <NavButtonContext.Provider value={state}>
+                    <CardsContainer
+                      response={response}
+                      showCardsRoute={showCardsRoute}
+                      cardIndex={cardIndex}
+                      cardId={cardId}
+                      toggleNotes={toggleNotes}
+                      inputNotes={inputNotes}
+                      notes={notes}
+                      submitUpdate={submitUpdate}
+                      showNotes={showNotes}
+                    />
+                  </NavButtonContext.Provider>
+                )
+              }
+            />
+            <Route
+              render={function() {
+                return <p>Not Found</p>;
               }}
-            >
-              <Grid>
-                <Grid.Row>
-                  <Grid.Column width={16}>
-                    <Header as="h2" textAlign="center">
-                      JS Flashcards
-                    </Header>
-                    <Switch>
-                      <Route
-                        exact
-                        path={"/"}
-                        render={props => (
-                          <CardsLanding
-                            startingCards={startingCards}
-                            showCardsRoute={showCardsRoute}
-                            setCardIndex={setCardIndexOnClick}
-                          />
-                        )}
-                      />
-                      <Route
-                        exact
-                        path={"/cards"}
-                        render={props =>
-                          loading ? (
-                            <Loading />
-                          ) : (
-                            <CardsContainer
-                              response={response}
-                              showCardsRoute={showCardsRoute}
-                              cardIndex={cardIndex}
-                              cardId={cardId}
-                              goBack={goBack}
-                              toggleNotes={toggleNotes}
-                              showNotes={showNotes}
-                              inputNotes={inputNotes}
-                              notes={notes}
-                              submitUpdate={submitUpdate}
-                              dispatch={dispatch}
-                            />
-                          )
-                        }
-                      />
-                      <Route
-                        render={function() {
-                          return <p>Not Found</p>;
-                        }}
-                      />
-                    </Switch>
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid>
-            </Container>
-          </div>
-        </HashRouter>
-      </div>
+            />
+          </Switch>
+        </Layout>
+      </HashRouter>
     </div>
   );
 };
