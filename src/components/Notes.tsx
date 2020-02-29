@@ -21,7 +21,7 @@ const Notes = ({
   submitUpdate
 }: Props) => {
   return (
-    <Card>
+    <Card centered>
       <Card.Content>
         <Card.Header>{response[cardIndex].content[cardId].method}</Card.Header>
         <Card.Description>

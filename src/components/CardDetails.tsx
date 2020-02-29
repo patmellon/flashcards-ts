@@ -16,7 +16,7 @@ const CardDetails = ({ card, toggleNotes }: Props) => {
   };
 
   return (
-    <Card>
+    <Card centered>
       <Card.Content>
         <Card.Header>{card.method}</Card.Header>
         <Card.Description>
