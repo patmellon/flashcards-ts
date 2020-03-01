@@ -66,13 +66,11 @@ const App = () => {
 
   const goBack = () => {
     history.push("/");
-    dispatch("go back");
     setShowNotes(false);
   };
 
   const setCardIndexOnClick = i => {
     setCardIndex(i);
-    showCardsRoute();
   };
 
   const toggleNotes = () => {
@@ -149,7 +147,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <CardContext.Provider value={state}>
       <HashRouter>
         <Layout>
           <Switch>
@@ -164,19 +162,7 @@ const App = () => {
                 />
               )}
             />
-            <Route
-              exact
-              path={"/cards"}
-              render={props =>
-                loading ? (
-                  <Loading />
-                ) : (
-                  <CardContext.Provider value={state}>
-                    <CardsContainer />
-                  </CardContext.Provider>
-                )
-              }
-            />
+            <Route exact path={"/cards"} component={CardsContainer} />
             <Route
               render={function() {
                 return <p>Not Found</p>;
@@ -185,7 +171,7 @@ const App = () => {
           </Switch>
         </Layout>
       </HashRouter>
-    </div>
+    </CardContext.Provider>
   );
 };
 
