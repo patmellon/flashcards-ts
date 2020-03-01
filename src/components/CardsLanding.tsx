@@ -4,16 +4,28 @@ import { Card, Button } from "semantic-ui-react";
 interface Props {
   startingCards: [];
   setCardIndex: (i: number) => void;
+  showCardsRoute: () => void;
 }
 
-const CardsLanding = ({ startingCards, setCardIndex }: Props) => {
+const CardsLanding = ({
+  startingCards,
+  setCardIndex,
+  showCardsRoute
+}: Props) => {
   const mappedStartingCards = startingCards.map((card, i) => {
     return (
       <Card key={card}>
         <Card.Content>
           <Card.Header>{startingCards[i]}</Card.Header>
           <Card.Description>
-            <Button onClick={() => setCardIndex(i)}>View</Button>
+            <Button
+              onClick={() => {
+                setCardIndex(i);
+                showCardsRoute();
+              }}
+            >
+              View
+            </Button>
           </Card.Description>
         </Card.Content>
       </Card>
