@@ -16,13 +16,20 @@ const CardNavButtons = () => {
         }}
       >
         <Button.Group textAlign="center">
-          <Button primary onClick={() => dispatch("previous")} id="previous">
+          <Button primary onClick={() => dispatch("previous")}>
             <Icon />
             Previous
           </Button>
           )}
-          <Button onClick={goBack}>Home</Button>
-          <Button primary onClick={() => dispatch("next")} id="next">
+          <Button
+            onClick={() => {
+              dispatch("go back");
+              goBack();
+            }}
+          >
+            Home
+          </Button>
+          <Button primary onClick={() => dispatch("next")}>
             Next
             <Icon />
           </Button>
