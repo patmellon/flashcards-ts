@@ -1,48 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import Notes from "./Notes";
 import CardNavButtons from "./CardNavButtons";
 import CardDetails from "./CardDetails";
+import { CardContext } from "../context/CardContext";
 
-interface Props {
-  response: { content: { method: string; description: string }[] }[];
-  cardIndex: number;
-  cardId: number;
-  showNotes: boolean;
-  notes: string;
-  toggleNotes(): Function;
-  submitUpdate(): Function;
-  inputNotes(): Function;
-}
+const CardsContainer = () => {
+  const context = useContext(CardContext);
+  const { cardId, cardIndex, showNotes, response } = context;
 
-const CardsContainer = ({
-  response,
-  cardIndex,
-  cardId,
-  toggleNotes,
-  submitUpdate,
-  showNotes,
-  inputNotes,
-  notes
-}: Props) => {
   const cardDetails = response[cardIndex].content.map(card => {
-    return <CardDetails card={card} toggleNotes={toggleNotes} />;
+    return <CardDetails card={card} />;
   });
 
   return (
     <div>
-      {showNotes ? (
-        <Notes
-          response={response}
-          cardIndex={cardIndex}
-          cardId={cardId}
-          toggleNotes={toggleNotes}
-          inputNotes={inputNotes}
-          notes={notes}
-          submitUpdate={submitUpdate}
-        />
-      ) : (
-        cardDetails[cardId]
-      )}
+      {showNotes ? <Notes /> : cardDetails[cardId]}
       {<CardNavButtons />}
     </div>
   );

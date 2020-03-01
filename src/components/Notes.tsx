@@ -1,29 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, Button, TextArea, Icon } from "semantic-ui-react";
+import { CardContext } from "../context/CardContext";
 
-interface Props {
-  response: { content: { method: string; description: string }[] }[];
-  cardIndex: number;
-  cardId: number;
-  inputNotes: () => void;
-  notes: string;
-  toggleNotes: () => void;
-  submitUpdate: () => void;
-}
+const Notes = () => {
+  const context = useContext(CardContext);
+  const {
+    cardId,
+    notes,
+    inputNotes,
+    submitUpdate,
+    cardIndex,
+    toggleNotes,
+    response
+  } = context;
+  const cardHeader = response[cardIndex].content[cardId].method;
 
-const Notes = ({
-  response,
-  cardIndex,
-  cardId,
-  inputNotes,
-  notes,
-  toggleNotes,
-  submitUpdate
-}: Props) => {
   return (
     <Card centered>
       <Card.Content>
-        <Card.Header>{response[cardIndex].content[cardId].method}</Card.Header>
+        <Card.Header>{cardHeader}</Card.Header>
         <Card.Description>
           <TextArea
             onChange={inputNotes}

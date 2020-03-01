@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Button, Icon, Divider, Grid } from "semantic-ui-react";
-import { NavButtonContext } from "../context/NavButtonContext";
+import { CardContext } from "../context/CardContext";
 
 const CardNavButtons = () => {
-  const context = useContext(NavButtonContext);
+  const context = useContext(CardContext);
   const { dispatch, goBack } = context;
 
   return (

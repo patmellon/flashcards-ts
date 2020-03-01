@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Card, Button, Icon } from "semantic-ui-react";
+import { CardContext } from "../context/CardContext";
 
 interface Props {
   card: {
     method: string;
     description: string;
   };
-  toggleNotes(): Function;
 }
 
-const CardDetails = ({ card, toggleNotes }: Props) => {
+const CardDetails = ({ card }: Props) => {
+  const context = useContext(CardContext);
+  const { toggleNotes } = context;
+
   const [hideAnswer, setHideAnswer] = useState(true);
   const toggleAnswer = () => {
     setHideAnswer(!hideAnswer);

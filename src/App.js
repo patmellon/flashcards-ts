@@ -6,7 +6,7 @@ import CardsContainer from "./components/CardsContainer";
 import Loading from "./components/Loading";
 import Layout from "./components/Layout";
 import data from "./data/data";
-import { NavButtonContext } from "./context/NavButtonContext";
+import { CardContext } from "./context/CardContext";
 
 const api = require("./utils/api");
 const history = createHashHistory();
@@ -134,13 +134,19 @@ const App = () => {
     setResponse(newCardCollection);
   };
 
-  const state = useMemo(() => {
-    return {
-      cardId,
-      goBack,
-      dispatch
-    };
-  }, [cardId]);
+  const state = {
+    cardId,
+    goBack,
+    dispatch,
+    notes,
+    inputNotes,
+    submitUpdate,
+    showCardsRoute,
+    cardIndex,
+    showNotes,
+    toggleNotes,
+    response
+  };
 
   return (
     <div>
@@ -165,19 +171,9 @@ const App = () => {
                 loading ? (
                   <Loading />
                 ) : (
-                  <NavButtonContext.Provider value={state}>
-                    <CardsContainer
-                      response={response}
-                      showCardsRoute={showCardsRoute}
-                      cardIndex={cardIndex}
-                      cardId={cardId}
-                      toggleNotes={toggleNotes}
-                      inputNotes={inputNotes}
-                      notes={notes}
-                      submitUpdate={submitUpdate}
-                      showNotes={showNotes}
-                    />
-                  </NavButtonContext.Provider>
+                  <CardContext.Provider value={state}>
+                    <CardsContainer />
+                  </CardContext.Provider>
                 )
               }
             />
