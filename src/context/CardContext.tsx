@@ -5,27 +5,6 @@ import data from "../data/data.json";
 // const api = require("../utils/api");
 const history = createHashHistory();
 
-export interface Context {
-  dispatch: (action: string) => void;
-  cardId: number;
-  cardIndex: number;
-  goBack: () => void;
-  notes: string;
-  inputNotes: (e: any) => void;
-  submitUpdate: () => void;
-  showNotes: boolean;
-  toggleNotes: () => void;
-  setCardIndexOnClick: (i: number) => void;
-  response: {
-    content: {
-      method: string;
-      description: string;
-      example: string;
-      notes: string;
-    }[];
-  }[];
-}
-
 interface Props {
   children?: React.ReactNode;
 }
@@ -172,6 +151,27 @@ export const withProvider = (Component: any) => {
   };
   return WrapperComponent;
 };
+
+interface Context {
+  dispatch: (action: string) => void;
+  cardId: number;
+  cardIndex: number;
+  goBack: () => void;
+  notes: string;
+  inputNotes: (e: any) => void;
+  submitUpdate: () => void;
+  showNotes: boolean;
+  toggleNotes: () => void;
+  setCardIndexOnClick: (i: number) => void;
+  response: {
+    content: {
+      method: string;
+      description: string;
+      example: string;
+      notes: string;
+    }[];
+  }[];
+}
 
 const DEFAULT_STATE = {
   dispatch: () => {},
