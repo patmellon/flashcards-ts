@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Card, Button } from "semantic-ui-react";
+import { CardContext } from "../context/CardContext";
+import data from "../data/data.json";
+import { createHashHistory } from "history";
 
-interface Props {
-  startingCards: [];
-  setCardIndex: (i: number) => void;
-  showCardsRoute: () => void;
-}
+const history = createHashHistory();
 
-const CardsLanding = ({
-  startingCards,
-  setCardIndex,
-  showCardsRoute
-}: Props) => {
+const CardsLanding = () => {
+  const context = useContext(CardContext);
+  const [startingCards, setStartingCards] = useState([]);
+  const { setCardIndexOnClick } = context;
+
+  useEffect(() => {
+    const displayStartingCards = (res: any) => {
+      return res.reduce((startingCards: any, card: any) => {
+        startingCards.push(card.group);
+
+        return startingCards;
+      }, []);
+    };
+
+    setStartingCards(displayStartingCards(data));
+  }, []);
+
+  const showCardsRoute = () => {
+    history.push("/cards");
+  };
+
   const mappedStartingCards = startingCards.map((card, i) => {
     return (
       <Card key={card}>
@@ -20,7 +35,7 @@ const CardsLanding = ({
           <Card.Description>
             <Button
               onClick={() => {
-                setCardIndex(i);
+                setCardIndexOnClick(i);
                 showCardsRoute();
               }}
             >
