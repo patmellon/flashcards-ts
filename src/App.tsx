@@ -10,7 +10,6 @@ const App = () => {
     <HashRouter>
       <Layout>
         <Switch>
-          test
           <Route exact path={"/"} component={CardsLanding} />
           <Route exact path={"/cards"} component={CardsContainer} />
           <Route
