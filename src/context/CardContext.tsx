@@ -156,6 +156,8 @@ interface Context {
   submitUpdate: () => void;
   showNotes: boolean;
   toggleNotes: () => void;
+  closeNotes: () => void;
+  setNotes: (notes: string) => void;
   setCardIndexOnClick: (i: number) => void;
   response: {
     content: {
