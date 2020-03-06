@@ -180,7 +180,9 @@ const DEFAULT_STATE = {
   showNotes: false,
   toggleNotes: () => {},
   response: [],
-  setCardIndexOnClick: () => {}
+  setCardIndexOnClick: () => {},
+  closeNotes: () => {},
+  setNotes: () => {}
 };
 
 export const CardContext = React.createContext<Context>(DEFAULT_STATE);
