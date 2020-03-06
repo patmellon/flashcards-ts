@@ -127,7 +127,9 @@ const Provider: React.FC<Props> = ({ children }) => {
     showNotes,
     toggleNotes,
     response,
-    setCardIndexOnClick
+    setCardIndexOnClick,
+    closeNotes,
+    setNotes
   };
 
   return <CardContext.Provider value={state}>{children}</CardContext.Provider>;
