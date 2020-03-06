@@ -24,8 +24,12 @@ const Provider: React.FC<Props> = ({ children }) => {
   const [notes, setNotes] = useState("");
 
   useEffect(() => {
-    setResponse(data);
-    //setLoading(false);
+    const localStorageCards = window.localStorage.getItem("cards");
+    if (localStorageCards) {
+      setResponse(JSON.parse(localStorageCards));
+    } else {
+      setResponse(data);
+    }
   }, []);
 
   const cardIdReducer = (cardId: number, action: string) => {
