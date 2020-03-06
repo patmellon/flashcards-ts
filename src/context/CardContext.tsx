@@ -19,7 +19,6 @@ interface Data {
 
 const Provider: React.FC<Props> = ({ children }) => {
   const [response, setResponse] = useState<Data[]>([]);
-  // const [loading, setLoading] = useState(true);
   const [cardIndex, setCardIndex] = useState(0);
   const [showNotes, setShowNotes] = useState(false);
   const [notes, setNotes] = useState("");
