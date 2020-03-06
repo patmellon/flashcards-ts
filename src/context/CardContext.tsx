@@ -2,7 +2,6 @@ import React, { useState, useEffect, useReducer } from "react";
 import { createHashHistory } from "history";
 import data from "../data/data.json";
 
-// const api = require("../utils/api");
 const history = createHashHistory();
 
 interface Props {
@@ -67,15 +66,11 @@ const Provider: React.FC<Props> = ({ children }) => {
 
   const toggleNotes = () => {
     setShowNotes(!showNotes);
-    setNoteState();
   };
 
-  const setNoteState = () => {
-    let notes = response[cardIndex].content[cardId].notes;
-    if (typeof notes !== "undefined") {
-      setNotes(notes);
-    } else {
-      setNotes("");
+  const closeNotes = () => {
+    if (showNotes) {
+      setShowNotes(false);
     }
   };
 
