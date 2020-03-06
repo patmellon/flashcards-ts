@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Card, Button, TextArea, Icon } from "semantic-ui-react";
 import { CardContext } from "../context/CardContext";
 
@@ -11,9 +11,20 @@ const Notes = () => {
     submitUpdate,
     cardIndex,
     toggleNotes,
-    response
+    response,
+    setNotes,
+    showNotes
   } = context;
   const cardHeader = response[cardIndex].content[cardId].method;
+
+  useEffect(() => {
+    let notes = response[cardIndex].content[cardId].notes;
+    if (typeof notes !== "undefined") {
+      setNotes(notes);
+    } else {
+      setNotes("");
+    }
+  }, [showNotes]);
 
   return (
     <Card centered>
