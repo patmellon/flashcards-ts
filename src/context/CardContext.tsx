@@ -108,14 +108,8 @@ const Provider: React.FC<Props> = ({ children }) => {
   };
 
   const submitUpdate = () => {
-    /*api
-      .updateNotes(this.setCardObject())
-      .then(responseJson => {
-        this.handleUpdate(responseJson);
-      })
-      .catch(error => {
-        console.log(error);
-      }); */
+    window.localStorage.setItem("cards", JSON.stringify(setCardObject()));
+    handleUpdate(setCardObject());
   };
 
   const handleUpdate = (newCardCollection: any) => {
