@@ -4,7 +4,7 @@ import { CardContext } from "../context/CardContext";
 
 const CardNavButtons = () => {
   const context = useContext(CardContext);
-  const { dispatch, goBack } = context;
+  const { dispatch, goBack, closeNotes } = context;
 
   return (
     <div>
@@ -16,9 +16,14 @@ const CardNavButtons = () => {
         }}
       >
         <Button.Group textAlign="center">
-          <Button primary onClick={() => dispatch("previous")}>
-            <Icon />
-            Previous
+          <Button
+            primary
+            onClick={() => {
+              dispatch("previous");
+              closeNotes();
+            }}
+          >
+            <Icon name="arrow alternate circle left outline" />
           </Button>
           )}
           <Button
@@ -29,9 +34,14 @@ const CardNavButtons = () => {
           >
             Home
           </Button>
-          <Button primary onClick={() => dispatch("next")}>
-            Next
-            <Icon />
+          <Button
+            primary
+            onClick={() => {
+              dispatch("next");
+              closeNotes();
+            }}
+          >
+            <Icon name="arrow alternate circle right outline" />
           </Button>
           )}
         </Button.Group>
